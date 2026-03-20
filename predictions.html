@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Predictions | AI-Trade.io</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        html { background-color: #060B14; }
+        body { overflow-x: clip; max-width: 100vw; }
+        ::-webkit-scrollbar { width: 6px; background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        select { -webkit-appearance: none; -moz-appearance: none; appearance: none; } 
+        select option { background-color: #0A101D; color: #38bdf8; font-weight: bold; }
+        .anti-flash-hidden { opacity: 0; }
+        .anti-flash-visible { opacity: 1; transition: opacity 0.2s ease-in-out; }
+    </style>
+
+    <script>
+        const savedLang = localStorage.getItem('app_lang') || 'EN';
+        document.documentElement.lang = savedLang.toLowerCase();
+        document.documentElement.dir = savedLang === 'AR' ? 'rtl' : 'ltr';
+        document.documentElement.classList.add('anti-flash-hidden');
+        window.addEventListener('DOMContentLoaded', () => {
+            if (savedLang === 'AR') document.body.style.fontFamily = '"Cairo", sans-serif';
+            setTimeout(() => { 
+                document.documentElement.classList.remove('anti-flash-hidden');
+                document.documentElement.classList.add('anti-flash-visible');
+            }, 150);
+        });
+    </script>
+</head>
+<body class="selection:bg-cyan-500/30 overflow-x-hidden bg-[#060B14] flex flex-col min-h-screen text-white">
+
+    <!-- NAVBAR -->
+    <nav class="flex items-center justify-between px-6 md:px-12 py-4 border-b border-slate-800/50 bg-[#060B14]/90 backdrop-blur-xl sticky top-0 z-50">
+        <div class="flex items-center gap-4 md:gap-6">
+            <a href="index.html" class="flex items-center gap-2 group shrink-0">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-[0_0_10px_rgba(6,182,212,0.5)]">AI</div>
+                <span class="text-xl font-extrabold tracking-tight text-white hidden sm:block">AI-Trade<span class="text-cyan-400 font-light">.io</span></span>
+            </a>
+            
+            <div class="h-6 w-px bg-slate-800 hidden sm:block"></div>
+            
+            <div class="relative shrink-0">
+                <select id="lang-selector-nav" onchange="changeLanguage(this.value); setTimeout(() => location.reload(), 50);" class="appearance-none bg-transparent text-white text-xs font-bold border border-slate-700 rounded-lg px-3 py-1.5 pr-8 outline-none cursor-pointer hover:border-cyan-500 transition-colors">
+                    <option value="EN">🇺🇸 EN</option>
+                    <option value="FR">🇫🇷 FR</option>
+                    <option value="ES">🇪🇸 ES</option>
+                    <option value="AR">🇲🇦 AR</option>
+                </select>
+                <script>
+                    document.getElementById('lang-selector-nav').value = localStorage.getItem('app_lang') || 'EN';
+                </script>
+                <div class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                    <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </div>
+
+            <div class="h-6 w-px bg-slate-800 hidden lg:block"></div>
+
+            <div class="hidden lg:flex gap-6 items-center">
+                <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_home">Home</a>
+                <a href="app.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_terminal">Terminal</a>
+                <a href="news.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_news">Market News</a>
+                <a href="blog.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="latest_insights">Insights</a>
+                <a href="glossary.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_glossary">Glossary</a>
+                <a href="predictions.html" class="text-sm font-medium text-cyan-400 transition-colors" data-i18n="nav_predictions">AI Predictions</a>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <a href="app.html" class="hidden sm:block bg-cyan-600 px-5 py-2 rounded-xl font-bold text-sm text-white hover:bg-cyan-500 transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]" data-i18n="launch_app">Launch App</a>
+            
+            <!-- Mobile Menu Button (Burger) -->
+            <button id="mobile-menu-btn" class="lg:hidden text-slate-300 hover:text-cyan-400 focus:outline-none">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[#0A101D] border-b border-slate-800 flex-col py-4 px-6 gap-4 shadow-2xl lg:hidden">
+            <a href="index.html" class="text-sm font-bold text-slate-300" data-i18n="nav_home">Home</a>
+            <a href="app.html" class="text-sm font-bold text-slate-300" data-i18n="nav_terminal">Terminal</a>
+            <a href="news.html" class="text-sm font-bold text-slate-300" data-i18n="nav_news">Market News</a>
+            <a href="blog.html" class="text-sm font-bold text-slate-300" data-i18n="latest_insights">Insights</a>
+            <a href="glossary.html" class="text-sm font-bold text-slate-300" data-i18n="nav_glossary">Glossary</a>
+            <a href="predictions.html" class="text-sm font-bold text-cyan-400" data-i18n="nav_predictions">AI Predictions</a>
+            <a href="app.html" class="bg-cyan-600 text-center py-3 rounded-xl font-bold text-sm text-white mt-2" data-i18n="launch_app">Launch App</a>
+        </div>
+    </nav>
+
+    <main class="flex-1 max-w-7xl mx-auto px-6 py-20 w-full">
+        <div class="text-center mb-12">
+            <span class="bg-blue-500/10 text-blue-400 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border border-blue-500/20 mb-4 inline-block" data-i18n="nav_predictions">AI Predictions</span>
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight" data-i18n="predictions_title">AI Price <span class="text-blue-400 italic">Predictions</span></h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto" data-i18n="predictions_sub">Daily AI-driven forecasts for major assets generated by Advanced Neural Networks.</p>
+        </div>
+
+        <!-- RESPONSIVE PREDICTIONS CONTAINER (Cards on Mobile, Table on Desktop) -->
+        <div class="bg-[#0A101D] border border-slate-800 rounded-3xl shadow-xl mb-12 flex flex-col overflow-hidden">
+            
+            <!-- Desktop Header -->
+            <div class="hidden lg:grid grid-cols-7 gap-4 px-6 py-5 bg-[#0F172A] text-[11px] uppercase font-bold text-slate-400 border-b border-slate-800 tracking-widest">
+                <div>Asset</div>
+                <div>Current Price</div>
+                <div>AI Trend</div>
+                <div class="text-cyan-400">Entry</div>
+                <div class="text-emerald-400">Target (TP)</div>
+                <div class="text-red-400">Stop Loss (SL)</div>
+                <div>Confidence</div>
+            </div>
+
+            <!-- Body (Rows/Cards) -->
+            <div id="predictions-table-body" class="flex flex-col divide-y divide-slate-800/50">
+                <!-- Loading State -->
+                <div class="px-6 py-12 text-center text-slate-500 flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5 animate-spin text-cyan-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    Running AI Neural Models...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- DISCLAIMER -->
+    <div class="max-w-7xl mx-auto px-6 mb-8 mt-4">
+        <div class="bg-[#0A101D] border border-red-500/20 rounded-2xl p-6 text-center shadow-lg">
+            <h3 class="text-[13px] font-bold text-red-400 mb-3 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <span data-i18n="risk_title">Risk Warnings and Investment Disclaimers</span>
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed max-w-5xl mx-auto" data-i18n="risk_desc">
+                This A.I. trade analysis is strictly for informational and educational purposes. It does not constitute financial advice. Trading involves significant risk.
+            </p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="py-8 border-t border-slate-800/50 bg-[#0A101D] mt-auto">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 tracking-wider">
+            <p data-i18n="footer">© 2026 AI-Trade.io - Advanced Trading Intelligence</p>
+            <div class="flex gap-6 font-bold uppercase tracking-widest text-slate-400">
+                <a href="privacy.html" class="hover:text-cyan-400 transition-colors">Privacy Policy</a>
+                <a href="terms.html" class="hover:text-cyan-400 transition-colors">Terms of Service</a>
+                <a href="mailto:contact@ai-trade.io" class="hover:text-cyan-400 transition-colors">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/translations.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        async function loadPredictions() {
+            try {
+                const res = await fetch('https://ai-trade-cms.zridi-tanger.workers.dev', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: "get_predictions" })
+                });
+                const data = await res.json();
+                const tbody = document.getElementById('predictions-table-body');
+                
+                if(data && data.length > 0) {
+                    tbody.innerHTML = data.map(item => {
+                        let isBullish = item.trend.toLowerCase() === 'bullish';
+                        let trendColor = isBullish ? 'text-emerald-400 bg-emerald-400/10 border-emerald-500/20' : 'text-red-400 bg-red-400/10 border-red-500/20';
+                        
+                        // Responsive Card/Row Design
+                        return `
+                            <div class="flex flex-col lg:grid lg:grid-cols-7 gap-3 lg:gap-4 px-6 py-6 lg:py-5 hover:bg-slate-900/50 transition-colors cursor-pointer items-start lg:items-center" onclick="window.location.href='app.html?symbol=BINANCE:${item.coin}USDT&name=${item.name}'">
+                                
+                                <!-- Asset & Trend (Mobile Header) -->
+                                <div class="flex items-center justify-between w-full lg:w-auto mb-3 lg:mb-0">
+                                    <div class="flex items-center gap-3">
+                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-8 h-8 lg:w-6 lg:h-6">
+                                        <span class="font-bold text-white text-base lg:text-sm">${item.name}</span>
+                                        <span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded">${item.coin}</span>
+                                    </div>
+                                    <div class="lg:hidden">
+                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold border uppercase tracking-wider ${trendColor}">${item.trend}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Current Price -->
+                                <div class="flex justify-between w-full lg:w-auto items-center">
+                                    <span class="text-xs text-slate-500 lg:hidden">Current Price</span>
+                                    <span class="font-mono text-white">$${item.price}</span>
+                                </div>
+
+                                <!-- Trend (Desktop Only) -->
+                                <div class="hidden lg:block">
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-bold border uppercase tracking-wider ${trendColor}">${item.trend}</span>
+                                </div>
+
+                                <!-- Entry -->
+                                <div class="flex justify-between w-full lg:w-auto items-center">
+                                    <span class="text-xs text-slate-500 lg:hidden text-cyan-400/70">Entry</span>
+                                    <span class="font-mono font-bold text-cyan-400">$${item.entry}</span>
+                                </div>
+
+                                <!-- Target -->
+                                <div class="flex justify-between w-full lg:w-auto items-center">
+                                    <span class="text-xs text-slate-500 lg:hidden text-emerald-400/70">Target (TP)</span>
+                                    <span class="font-mono font-bold text-emerald-400">$${item.target}</span>
+                                </div>
+
+                                <!-- Stop Loss -->
+                                <div class="flex justify-between w-full lg:w-auto items-center">
+                                    <span class="text-xs text-slate-500 lg:hidden text-red-400/70">Stop Loss (SL)</span>
+                                    <span class="font-mono font-bold text-red-400">$${item.sl}</span>
+                                </div>
+
+                                <!-- Confidence -->
+                                <div class="flex justify-between items-center w-full lg:w-auto mt-4 lg:mt-0 pt-4 lg:pt-0 border-t border-slate-800/50 lg:border-0">
+                                    <span class="text-xs text-slate-500 lg:hidden">AI Confidence</span>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-32 lg:w-20 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400" style="width: ${item.confidence}%"></div>
+                                        </div>
+                                        <span class="text-xs font-bold text-white">${item.confidence}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    tbody.innerHTML = '<div class="px-6 py-10 text-center text-slate-500">No predictions generated yet. Admin needs to click "Generate AI Predictions" in the dashboard.</div>';
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        
+        // Wait for language JS to settle before fetching content
+        setTimeout(loadPredictions, 200);
+    </script>
+
+    <script>
+        // 📱 SCRIPT MENU MOBILE (Burger)
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        });
+    </script>
+</body>
+</html>

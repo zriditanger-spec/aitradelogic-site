@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | AI-Trade.io</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        html { background-color: #060B14; scroll-behavior: smooth; }
+        body { overflow-x: clip; max-width: 100vw; font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        .anti-flash { opacity: 0; }
+        
+        /* Active state for sidebar links */
+        .nav-link.active {
+            color: #22d3ee; /* cyan-400 */
+            border-left-color: #22d3ee;
+            background-color: rgba(34, 211, 238, 0.05);
+        }
+    </style>
+    <script>
+        (function() {
+            const savedLang = localStorage.getItem('app_lang') || 'EN';
+            document.documentElement.lang = savedLang.toLowerCase();
+            document.documentElement.dir = savedLang === 'AR' ? 'rtl' : 'ltr';
+            if (savedLang === 'AR') {
+                document.write('<style>body { font-family: "Cairo", sans-serif !important; }</style>');
+            }
+            document.documentElement.classList.add('anti-flash');
+            window.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    document.documentElement.style.transition = 'opacity 0.2s ease';
+                    document.documentElement.classList.remove('anti-flash');
+                }, 100);
+            });
+        })();
+    </script>
+</head>
+<body class="selection:bg-cyan-500/30 overflow-x-hidden bg-[#060B14] flex flex-col min-h-screen text-slate-300">
+
+    <!-- Navbar -->
+    <nav class="flex items-center justify-between px-6 md:px-12 py-4 border-b border-slate-800/50 bg-[#060B14]/90 backdrop-blur-xl sticky top-0 z-50">
+        <div class="flex items-center gap-4 md:gap-6">
+            <a href="index.html" class="flex items-center gap-2 group shrink-0">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-[0_0_10px_rgba(6,182,212,0.5)]">AI</div>
+                <span class="text-xl font-extrabold tracking-tight text-white hidden sm:block">AI-Trade<span class="text-cyan-400 font-light">.io</span></span>
+            </a>
+            
+            <div class="relative shrink-0">
+                <select id="lang-selector-nav" onchange="changeLanguage(this.value); setTimeout(() => location.reload(), 50);" class="appearance-none bg-transparent text-white text-xs font-bold border border-slate-700 rounded-lg px-3 py-1.5 pr-8 outline-none cursor-pointer hover:border-cyan-500 transition-colors">
+                    <option value="EN">🇺🇸 EN</option>
+                    <option value="FR">🇫🇷 FR</option>
+                    <option value="ES">🇪🇸 ES</option>
+                    <option value="AR">🇲🇦 AR</option>
+                </select>
+                <script>
+                    document.getElementById('lang-selector-nav').value = localStorage.getItem('app_lang') || 'EN';
+                </script>
+                <div class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                    <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </div>
+
+            <div class="h-6 w-px bg-slate-800 hidden lg:block"></div>
+
+            <div class="hidden lg:flex gap-6 items-center">
+                <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_home">Home</a>
+                <a href="app.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_terminal">Terminal</a>
+                <a href="news.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_news">Market News</a>
+                <a href="blog.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="latest_insights">Insights</a>
+                <a href="glossary.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_glossary">Glossary</a>
+                <a href="predictions.html" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="nav_predictions">AI Predictions</a>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <a href="app.html" class="hidden sm:block bg-cyan-600 px-5 py-2 rounded-xl font-bold text-sm text-white hover:bg-cyan-500 transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]" data-i18n="launch_app">Launch App</a>
+            
+            <button id="mobile-menu-btn" class="lg:hidden text-slate-300 hover:text-cyan-400 focus:outline-none">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[#0A101D] border-b border-slate-800 flex-col py-4 px-6 gap-4 shadow-2xl lg:hidden">
+            <a href="index.html" class="text-sm font-bold text-slate-300" data-i18n="nav_home">Home</a>
+            <a href="app.html" class="text-sm font-bold text-slate-300" data-i18n="nav_terminal">Terminal</a>
+            <a href="news.html" class="text-sm font-bold text-slate-300" data-i18n="nav_news">Market News</a>
+            <a href="blog.html" class="text-sm font-bold text-slate-300" data-i18n="latest_insights">Insights</a>
+            <a href="glossary.html" class="text-sm font-bold text-slate-300" data-i18n="nav_glossary">Glossary</a>
+            <a href="predictions.html" class="text-sm font-bold text-slate-300" data-i18n="nav_predictions">AI Predictions</a>
+            <a href="app.html" class="bg-cyan-600 text-center py-3 rounded-xl font-bold text-sm text-white mt-2" data-i18n="launch_app">Launch App</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl mx-auto px-6 py-12 w-full flex flex-col md:flex-row gap-12 relative">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 shrink-0 md:sticky top-32 h-fit">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Jump to Section</h3>
+            <nav class="flex flex-col border-l border-slate-800" id="toc-nav">
+                <a href="#overview" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Overview</a>
+                <a href="#information-collection" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Information Collection</a>
+                <a href="#use-of-data" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Use of Data</a>
+                <a href="#cookies-tracking" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Cookies & Tracking</a>
+                <a href="#third-party-services" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Third-Party Services</a>
+                <a href="#security" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Security</a>
+                <a href="#changes-to-policy" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Changes to Policy</a>
+                <a href="#contact-us" class="nav-link px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white border-l-2 border-transparent hover:border-slate-600 transition-colors">Contact Us</a>
+            </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <div class="flex-1 max-w-3xl">
+            <div class="mb-12 border-b border-slate-800/80 pb-8">
+                <p class="text-sm text-cyan-500 font-semibold tracking-wider uppercase mb-3">Last Updated: March 15, 2026</p>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Privacy Policy</h1>
+            </div>
+
+            <div class="space-y-12 text-slate-300 leading-relaxed">
+                
+                <section id="overview" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">1. Overview</h2>
+                    <p class="mb-4">At AI-Trade.io, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our AI-driven trading analysis services.</p>
+                    <p>Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.</p>
+                </section>
+
+                <section id="information-collection" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">2. Information Collection</h2>
+                    <p class="mb-4">We may collect information about you in a variety of ways. The information we may collect on the Site includes:</p>
+                    <ul class="list-disc pl-6 space-y-2 mb-4 text-slate-400">
+                        <li><strong class="text-slate-200">Personal Data:</strong> Personally identifiable information, such as your name, shipping address, email address, and telephone number, and demographic information.</li>
+                        <li><strong class="text-slate-200">Derivative Data:</strong> Information our servers automatically collect when you access the Site, such as your IP address, your browser type, your operating system, your access times, and the pages you have viewed directly before and after accessing the Site.</li>
+                        <li><strong class="text-slate-200">Financial Data:</strong> Financial information, such as data related to your payment method (e.g., valid credit card number, card brand, expiration date) that we may collect when you purchase, order, return, exchange, or request information about our services from the Site.</li>
+                    </ul>
+                </section>
+
+                <section id="use-of-data" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">3. Use of Data</h2>
+                    <p class="mb-4">Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Site to:</p>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-400">
+                        <li>Create and manage your account.</li>
+                        <li>Process your transactions and send you related information.</li>
+                        <li>Provide, maintain, and improve our services.</li>
+                        <li>Send you technical notices, updates, security alerts, and support and administrative messages.</li>
+                        <li>Respond to your comments, questions, and customer service requests.</li>
+                    </ul>
+                </section>
+
+                <section id="cookies-tracking" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">4. Cookies & Tracking</h2>
+                    <p class="mb-4">We may use cookies, web beacons, tracking pixels, and other tracking technologies on the Site to help customize the Site and improve your experience. When you access the Site, your personal information is not collected through the use of tracking technology.</p>
+                    <p>Most browsers are set to accept cookies by default. You can remove or reject cookies, but be aware that such action could affect the availability and functionality of the Site.</p>
+                </section>
+
+                <section id="third-party-services" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">5. Third-Party Services</h2>
+                    <p class="mb-4">We may share information we have collected about you in certain situations. Your information may be disclosed as follows:</p>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-400">
+                        <li><strong class="text-slate-200">By Law or to Protect Rights:</strong> If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others.</li>
+                        <li><strong class="text-slate-200">Third-Party Service Providers:</strong> We may share your information with third parties that perform services for us or on our behalf, including payment processing, data analysis, email delivery, hosting services, customer service, and marketing assistance.</li>
+                    </ul>
+                </section>
+
+                <section id="security" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">6. Security</h2>
+                    <p class="mb-4">We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse.</p>
+                </section>
+
+                <section id="changes-to-policy" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">7. Changes to Policy</h2>
+                    <p class="mb-4">We may update this Privacy Policy from time to time in order to reflect, for example, changes to our practices or for other operational, legal, or regulatory reasons. We will alert you about any changes by updating the "Last Updated" date of this Privacy Policy. You are encouraged to periodically review this Privacy Policy to stay informed of updates.</p>
+                </section>
+
+                <section id="contact-us" class="scroll-mt-32">
+                    <h2 class="text-2xl font-bold text-white mb-4">8. Contact Us</h2>
+                    <p class="mb-4">If you have questions or comments about this Privacy Policy, please contact us at:</p>
+                    <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mt-4">
+                        <p class="text-white font-semibold mb-1">AI-Trade.io Legal Department</p>
+                        <p class="text-slate-400 mb-1">Email: <a href="mailto:privacy@ai-trade.io" class="text-cyan-400 hover:underline">privacy@ai-trade.io</a></p>
+                        <p class="text-slate-400">Address: 123 Trading Ave, Tech District, 10001</p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800/50 bg-[#060B14] py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-slate-500 text-sm">© 2026 AI-Trade.io. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="terms.html" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Terms of Service</a>
+                <a href="privacy.html" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        });
+
+        // Intersection Observer for highlighting active section in sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
