@@ -725,7 +725,7 @@ window.copySignal = function() {
                        currentLang === 'ES' ? "👉 Para leer el análisis completo, visite :" :
                        "👉 For the full analysis, visit :";
 
-    const textToCopy = `🤖 AI-Trade.io Signal: ${currentSymbol}\n\n📈 Bias: ${bias}\n🎯 Entry: ${entry}\n🛑 Stop Loss: ${sl}\n✅ Take Profit: ${tp}\n\n🧠 Analysis:\n${shortAnalysis} 🔒\n\n${ctaMessage}\n🌐 https://ai-trade.io`;
+    const textToCopy = `🤖 aitradelogic.com Signal: ${currentSymbol}\n\n📈 Bias: ${bias}\n🎯 Entry: ${entry}\n🛑 Stop Loss: ${sl}\n✅ Take Profit: ${tp}\n\n🧠 Analysis:\n${shortAnalysis} 🔒\n\n${ctaMessage}\n🌐 https://aitradelogic.com`;
 
     navigator.clipboard.writeText(textToCopy).then(() => {
         const btnText = document.getElementById('copy-btn-text');
@@ -750,7 +750,7 @@ window.shareOnX = function() {
                        currentLang === 'ES' ? "👉 Análisis completo en :" :
                        "👉 Full analysis at :";
 
-    const textToShare = `🤖 AI-Trade.io Signal: ${currentSymbol}\n\n📈 Bias: ${bias}\n🎯 Entry: ${entry}\n🛑 SL: ${sl}\n✅ TP: ${tp}\n\n${ctaMessage}\n🌐 https://ai-trade.io 🚀 #Crypto #Trading #AI`;
+    const textToShare = `🤖 aitradelogic.com Signal: ${currentSymbol}\n\n📈 Bias: ${bias}\n🎯 Entry: ${entry}\n🛑 SL: ${sl}\n✅ TP: ${tp}\n\n${ctaMessage}\n🌐 https://aitradelogic.com 🚀 #Crypto #Trading #AI`;
     
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}`;
     window.open(twitterUrl, '_blank');
@@ -1017,7 +1017,7 @@ window.showVIPModal = function(uid) {
     const modal = document.getElementById('vip-modal');
     const input = document.getElementById('referral-link-input');
     if(modal && input) {
-        input.value = `https://ai-trade.io/?ref=${uid}`;
+        input.value = `https://aitradelogic.com/?ref=${uid}`;
         modal.classList.remove('hidden');
     }
 };
@@ -1090,7 +1090,7 @@ window.verifyXShare = async function() {
     const text = document.getElementById('share-x-text');
     
     // Open Twitter share link
-    const textToShare = `🤖 I'm using AI-Trade.io to get live AI trading signals and market analysis! Check it out 🚀 #Crypto #Trading #AI \n\n🌐 https://ai-trade.io`;
+    const textToShare = `🤖 I'm using aitradelogic.com to get live AI trading signals and market analysis! Check it out 🚀 #Crypto #Trading #AI \n\n🌐 https://aitradelogic.com`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}`;
     window.open(twitterUrl, '_blank');
     
