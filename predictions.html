@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Predictions | aitradelogic.com</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -167,9 +166,23 @@
                 const tbody = document.getElementById('predictions-table-body');
                 
                 if(data && data.length > 0) {
+                    // Fetch live prices from Binance to ensure they are always up-to-date
+                    const symbols = data.map(item => item.coin + 'USDT');
+                    let livePrices = {};
+                    try {
+                        const binanceRes = await fetch('https://api.binance.com/api/v3/ticker/price');
+                        const binanceData = await binanceRes.json();
+                        binanceData.forEach(ticker => {
+                            if (symbols.includes(ticker.symbol)) {
+                                livePrices[ticker.symbol.replace('USDT', '')] = parseFloat(ticker.price).toFixed(4);
+                            }
+                        });
+                    } catch(e) { console.log('Failed to fetch live prices'); }
+
                     tbody.innerHTML = data.map(item => {
                         let isBullish = item.trend.toLowerCase() === 'bullish';
                         let trendColor = isBullish ? 'text-emerald-400 bg-emerald-400/10 border-emerald-500/20' : 'text-red-400 bg-red-400/10 border-red-500/20';
+                        let currentPrice = livePrices[item.coin] || item.price;
                         
                         // Responsive Card/Row Design
                         return `
@@ -190,7 +203,7 @@
                                 <!-- Current Price -->
                                 <div class="flex justify-between w-full lg:w-auto items-center">
                                     <span class="text-xs text-slate-500 lg:hidden">Current Price</span>
-                                    <span class="font-mono text-white">$${item.price}</span>
+                                    <span class="font-mono text-white">$${currentPrice}</span>
                                 </div>
 
                                 <!-- Trend (Desktop Only) -->
