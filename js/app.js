@@ -266,7 +266,7 @@ async function renderDynamicSections() {
         blogContainer.innerHTML = articles.slice(0, 4).map(post => `
             <a href="${post.url}" target="_blank" class="group bg-[#0A101D] border border-slate-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all flex flex-col h-full shadow-lg">
                 <div class="h-40 overflow-hidden relative">
-                    <img src="${post.image}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                    <img src="${post.image}" loading="lazy" width="400" height="160" onerror="this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=65&w=400&fm=webp&fit=crop'" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt="${post.title}">
                     <div class="absolute top-3 left-3 bg-cyan-600 text-white text-[9px] font-bold px-2 py-1 rounded uppercase">${post.category}</div>
                 </div>
                 <div class="p-5 flex flex-col flex-1">
