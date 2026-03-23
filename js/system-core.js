@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 setTimeout(() => {
     // 1. فخ صغيور للـ Adblock
     const bait = document.createElement('div');
-    bait.className = 'ad-banner adsbox doubleclick ad-placement';
+    bait.className = 'ad-banner adsbox doubleclick ad-placement adsystem sponsor adsense';
     bait.style.height = '1px';
     bait.style.width = '1px';
     bait.style.position = 'absolute';
