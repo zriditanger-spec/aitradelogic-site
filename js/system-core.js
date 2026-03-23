@@ -1,116 +1,33 @@
 // ==========================================
-// 🎯 SMART AD INJECTOR (FRONTEND)
-// ==========================================
-document.addEventListener("DOMContentLoaded", async () => {
-    // 🚨 تأكد أن هاد الرابط هو ديال الـ Worker ديالك
-    const WORKER_URL = "https://ai-trade-cms.zridi-tanger.workers.dev/"; 
-
-    try {
-        // 1. كنسولو السيرفر على الإعلانات
-        const res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: "get_public_ads" })
-        });
-        
-        const data = await res.json();
-        if (!data.success || !data.settings) return;
-
-        const settings = data.settings;
-        const adUnits = settings.ad_units || [];
-        const affiliates = settings.affiliates || [];
-
-        // دالة كتقلب على كود الإعلان أو الأفلييت
-        function getAdHtml(selectedId) {
-            if (!selectedId || selectedId === 'none') return null;
-            
-            // إيلا كان المنتج ديالك (الكتاب)
-            if (selectedId === 'prod') {
-                return `
-                <div class="w-full bg-[#0F172A] border border-purple-500/30 rounded-2xl p-4 flex items-center justify-between shadow-lg mb-4 mt-4">
-                    <div class="flex items-center gap-4">
-                        <img src="${settings.prod_img}" class="w-16 h-16 rounded-lg object-cover border border-purple-500/50" alt="${settings.prod_title}">
-                        <div>
-                            <h4 class="text-sm font-bold text-white">${settings.prod_title}</h4>
-                            <p class="text-[10px] text-slate-400">${settings.prod_desc}</p>
-                        </div>
-                    </div>
-                    <a href="${WORKER_URL}go/prod" target="_blank" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">${settings.prod_btn_text || 'Get Now'}</a>
-                </div>`;
-            }
-            
-            // إيلا كان إعلان ديال شركة
-            const ad = adUnits.find(a => a.id === selectedId);
-            if (ad) return ad.code;
-
-            // إيلا كان رابط أفلييت
-            const aff = affiliates.find(a => a.id === selectedId);
-            if (aff) {
-                return `<a href="${WORKER_URL}go/${aff.id}" target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-center py-3 rounded-xl transition-colors mb-4 mt-4"><span class="text-xs font-bold text-cyan-400 uppercase tracking-widest">🔗 ${aff.name}</span></a>`;
-            }
-            return null;
-        }
-
-        // 2. خريطة البلايص
-        const placements = {
-            'ad-home-top': settings.place_home_top,
-            'ad-blog-top': settings.place_blog_top,
-            'ad-blog-bot': settings.place_blog_bot,
-            'ad-news-top': settings.place_news_top,
-            'ad-news-side': settings.place_news_side,
-            'ad-glossary-top': settings.place_glossary_top,
-            'ad-predictions-top': settings.place_predictions_top,
-            'ad-article-top': window.location.pathname.includes('/blog/') ? settings.place_art_blog_top : settings.place_art_news_top,
-            'ad-article-mid': window.location.pathname.includes('/blog/') ? settings.place_art_blog_mid : settings.place_art_news_mid,
-            'ad-article-side': window.location.pathname.includes('/blog/') ? settings.place_art_blog_side : settings.place_art_news_side,
-        };
-
-        // 3. كنزولو كلاس 'hidden' وكنحطو الكود
-        for (const [divId, selectedAdId] of Object.entries(placements)) {
-            const container = document.getElementById(divId);
-            if (container && selectedAdId && selectedAdId !== 'none') {
-                const htmlToInject = getAdHtml(selectedAdId);
-                if (htmlToInject) {
-                    container.innerHTML = htmlToInject;
-                    container.classList.remove('hidden');
-                }
-            }
-        }
-
-    } catch (e) {
-        console.error("Ad Injector Error:", e);
-    }
-});
-
-// ==========================================
-// 🛡️ ANTI-ADBLOCK DETECTOR & POPUP
+// 🛡️ STEALTH CONTENT DETECTOR (NINJA MODE)
 // ==========================================
 setTimeout(() => {
-    // 1. فخ صغيور للـ Adblock
+    // 1. الفخ (Bait) - كلاسات كيقلب عليهم الآدبلوك باش يحصل
     const bait = document.createElement('div');
-    bait.className = 'ad-banner adsbox doubleclick ad-placement adsystem sponsor adsense';
+    bait.className = 'pub_300x250 adsbox ad-placement doubleclick';
     bait.style.height = '1px';
     bait.style.width = '1px';
     bait.style.position = 'absolute';
     bait.style.left = '-9999px';
     document.body.appendChild(bait);
 
-    // 2. كنتسناو شوية ونشوفو واش تقتل
+    // 2. كنتسناو ونشوفو واش الفخ تقتل
     setTimeout(() => {
         if (bait.offsetHeight === 0 || window.getComputedStyle(bait).display === 'none') {
-            // الزائر داير AdBlocker!
-            showAntiAdblockModal();
+            // 🚨 حصل! نطلعو الميساج بـ سمية مامعيقاش نهائياً
+            showSupportModal();
         }
         bait.remove();
-    }, 200);
+    }, 300);
 }, 2000);
 
-// 3. الديزاين ديال الميساج
-function showAntiAdblockModal() {
-    if(document.getElementById('anti-adblock-modal')) return;
+// 3. الديزاين ديال الميساج (بدون أي كلمة Adblock)
+function showSupportModal() {
+    // سمينا الآيدي sys-notice-99 باش يبان كود ديال السيستيم
+    if(document.getElementById('sys-notice-99')) return;
 
     const modalHtml = `
-    <div id="anti-adblock-modal" class="fixed inset-0 bg-[#060B14]/95 backdrop-blur-md z-[9999] flex items-center justify-center p-4 transition-all">
+    <div id="sys-notice-99" class="fixed inset-0 bg-[#060B14]/95 backdrop-blur-md z-[9999] flex items-center justify-center p-4 transition-all">
         <div class="bg-[#0A101D] border border-cyan-500/50 rounded-3xl p-8 max-w-md w-full shadow-[0_0_50px_rgba(6,182,212,0.2)] text-center relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-yellow-500"></div>
             
@@ -118,9 +35,9 @@ function showAntiAdblockModal() {
                 <span class="text-4xl">🛑</span>
             </div>
             
-            <h2 class="text-2xl font-black text-white mb-3">AdBlocker Detected!</h2>
+            <h2 class="text-2xl font-black text-white mb-3">Notice!</h2>
             <p class="text-slate-400 text-sm mb-6 leading-relaxed">
-                We noticed you are using an AdBlocker. Our AI analysis and live market data are 100% free, but we rely on ads to keep the servers running. 
+                It looks like you are using a content blocker. Our AI analysis and live market data are 100% free, but we rely on your support to keep the servers running. 
             </p>
             
             <div class="space-y-3">
