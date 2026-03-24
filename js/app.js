@@ -653,7 +653,7 @@ async function fetchLiveEvents() {
     const eventsContainer = document.getElementById('custom-events-container');
     if (!eventsContainer) return;
     
-    const cacheKey = `ai_events_${currentSymbol}_${currentLang}`;
+    const cacheKey = `ai_events_v2_${currentSymbol}_${currentLang}`;
     const cachedEvents = sessionStorage.getItem(cacheKey);
 
     if (cachedEvents) {
@@ -664,7 +664,7 @@ async function fetchLiveEvents() {
     }
 
     try {
-        const response = await fetch(ANALYZER_URL, {
+        const response = await fetch(CMS_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: "get_events", symbol: currentSymbol, language: currentLang })
