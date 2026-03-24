@@ -1373,14 +1373,32 @@ window.calculateRisk = function() {
     const sl = parseFloat(document.getElementById('res-sl').innerText) || 0;
     const tp = parseFloat(document.getElementById('res-tp').innerText) || 0;
 
+    // 1. حساب مبلغ المخاطرة بالدولار (مثلاً 3 دولار)
     const riskAmount = (balance * riskPercent) / 100;
+    
+    // 2. حساب مسافة وقف الخسارة
     let riskPerUnit = Math.abs(entry - sl) || 1;
-    const lotSize = riskAmount / riskPerUnit;
+    
+    // 🚨 3. القالب الجديد: تحديد حجم العقد (Contract Size) على حساب نوع السوق
+    let contractSize = 1; // الافتراضي للكريبتو (1 Lot = 1 حبة)
+    if (currentMarketType === 'forex' || currentMarketType === 'stock') {
+        contractSize = 100; // حجم العقد القياسي للفوركس والأسهم (1 Lot = 100 حبة)
+    }
+    
+    // 4. الحساب الصحيح للـ Lot
+    const lotSize = riskAmount / (riskPerUnit * contractSize);
+    
+    // 5. حساب الربح
     const rewardPerUnit = Math.abs(tp - entry);
+    const totalProfit = lotSize * rewardPerUnit * contractSize;
 
+    // 6. عرض النتائج فـ الشاشة
     document.getElementById('calc-risk-amount').innerText = riskAmount.toFixed(2);
-    document.getElementById('calc-lot-size').innerText = lotSize.toFixed(4);
-    document.getElementById('calc-profit-amount').innerText = (lotSize * rewardPerUnit).toFixed(2);
+    
+    // إيلا كان اللوت قل من 0.01، نبينو 4 أرقام باش المتداول يعرف بلي الصفقة صغيرة على حسابو
+    document.getElementById('calc-lot-size').innerText = lotSize < 0.01 && lotSize > 0 ? lotSize.toFixed(4) : lotSize.toFixed(2);
+    
+    document.getElementById('calc-profit-amount').innerText = totalProfit.toFixed(2);
     document.getElementById('res-rr').innerText = (rewardPerUnit / riskPerUnit).toFixed(2);
 };
 
