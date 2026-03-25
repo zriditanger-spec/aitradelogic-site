@@ -1373,8 +1373,9 @@ window.calculateRisk = function() {
     const sl = parseFloat(document.getElementById('res-sl').innerText) || 0;
     const tp = parseFloat(document.getElementById('res-tp').innerText) || 0;
 
-    // 1. حساب مبلغ المخاطرة المبدئي
-    let riskAmount = (balance * riskPercent) / 100;
+    // 1. حساب مبلغ المخاطرة اللي باغي المتداول (المثالي)
+    const intendedRiskAmount = (balance * riskPercent) / 100;
+    let riskAmount = intendedRiskAmount;
     
     // 2. حساب المسافة بين الدخول ووقف الخسارة
     let riskPerUnit = Math.abs(entry - sl) || 1;
@@ -1382,7 +1383,7 @@ window.calculateRisk = function() {
     // 3. حساب عدد الوحدات المطلوبة نظرياً
     let units = riskAmount / riskPerUnit;
     let finalDisplaySize = units;
-    let actualUnits = units; // هادي غنستعملوها باش نحسبو الربح والخسارة د بصح
+    let actualUnits = units; 
 
     // 🚨 4. تطبيق معايير Exness والحد الأدنى (0.01)
     if (currentMarketType === 'forex') {
@@ -1390,15 +1391,15 @@ window.calculateRisk = function() {
             // أزواج العملات (EURUSD...)
             finalDisplaySize = units / 100000;
         } else {
-            // الذهب (XAUUSD)
+            // الذهب (XAUUSD) والمؤشرات
             finalDisplaySize = units / 100;
         }
 
-        // 🔥 الحماية: إيلا كان اللوت أصغر من 0.01، نفرضو 0.01 ونحسبو الخسارة الحقيقية
+        // 🔥 الحماية: إيلا كان اللوت أصغر من 0.01
         if (finalDisplaySize > 0 && finalDisplaySize < 0.01) {
             finalDisplaySize = 0.01;
             actualUnits = entry < 200 ? (0.01 * 100000) : (0.01 * 100);
-            riskAmount = actualUnits * riskPerUnit; // تحديث الخسارة بالدولار
+            riskAmount = actualUnits * riskPerUnit; // تحديث الخسارة بالدولار باش تعكس الواقع
         }
     } else if (currentMarketType === 'crypto' || currentMarketType === 'stock') {
         finalDisplaySize = units;
@@ -1409,17 +1410,31 @@ window.calculateRisk = function() {
     const rewardPerUnit = Math.abs(tp - entry);
     const totalProfit = actualUnits * rewardPerUnit;
 
-    // 6. عرض النتائج فـ الشاشة
-    document.getElementById('calc-risk-amount').innerText = riskAmount.toFixed(2);
+    // 6. 🎨 عرض النتائج فـ الشاشة مع "نظام التحذير للمبتدئين"
+    const riskAmountEl = document.getElementById('calc-risk-amount');
     
-    // الفوركس ديما كيبين 2 أرقام كأقصى حد، الكريبتو كيبين 4 إيلا كان الرقم صغير
+    // إيلا كانت الخسارة المفروضة كبر من داكشي اللي بغا المتداول (بسبب اللوت 0.01)
+    if (riskAmount > intendedRiskAmount && intendedRiskAmount > 0) {
+        let warningMsg = currentLang === "AR" ? "⚠️ مخاطرة إجبارية أعلى من رأس مالك!" : 
+                         currentLang === "FR" ? "⚠️ Risque forcé par le lot minimum!" : 
+                         currentLang === "ES" ? "⚠️ ¡Riesgo forzado por lote mínimo!" : 
+                         "⚠️ Forced risk due to min lot!";
+                         
+        riskAmountEl.innerHTML = `$${riskAmount.toFixed(2)}- <span class="block text-[10px] text-red-500 mt-2 font-bold bg-red-500/10 p-1 rounded uppercase tracking-widest leading-tight">${warningMsg}</span>`;
+        riskAmountEl.style.color = "#ef4444"; // لون أحمر
+    } else {
+        // إيلا كان رأس المال كافي والأمور هانية
+        riskAmountEl.innerHTML = `$${riskAmount.toFixed(2)}-`;
+        riskAmountEl.style.color = ""; // رجع اللون الأصلي
+    }
+    
     if (currentMarketType === 'crypto' && finalDisplaySize > 0 && finalDisplaySize < 0.01) {
         document.getElementById('calc-lot-size').innerText = finalDisplaySize.toFixed(4);
     } else {
         document.getElementById('calc-lot-size').innerText = finalDisplaySize.toFixed(2);
     }
     
-    document.getElementById('calc-profit-amount').innerText = totalProfit.toFixed(2);
+    document.getElementById('calc-profit-amount').innerText = `$${totalProfit.toFixed(2)}+`;
     document.getElementById('res-rr').innerText = (rewardPerUnit / riskPerUnit).toFixed(2);
 };
 
