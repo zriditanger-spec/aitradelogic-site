@@ -1373,7 +1373,10 @@ window.calculateRisk = function() {
     const sl = parseFloat(document.getElementById('res-sl').innerText) || 0;
     const tp = parseFloat(document.getElementById('res-tp').innerText) || 0;
 
-    // 1. حساب مبلغ المخاطرة اللي باغي المتداول (المثالي)
+    // 🚨 قراءة واش المتداول مكوشي على "حساب سنت"
+    const isCentAccount = document.getElementById('calc-cent-account') && document.getElementById('calc-cent-account').checked;
+
+    // 1. حساب مبلغ المخاطرة اللي باغي المتداول (بـ الدولار)
     const intendedRiskAmount = (balance * riskPercent) / 100;
     let riskAmount = intendedRiskAmount;
     
@@ -1385,7 +1388,7 @@ window.calculateRisk = function() {
     let finalDisplaySize = units;
     let actualUnits = units; 
 
-    // 🚨 4. تطبيق معايير Exness والحد الأدنى (0.01)
+    // 🚨 4. تطبيق معايير المنصات والحد الأدنى (0.01)
     if (currentMarketType === 'forex') {
         if (entry < 200) { 
             // أزواج العملات (EURUSD...)
@@ -1395,18 +1398,29 @@ window.calculateRisk = function() {
             finalDisplaySize = units / 100;
         }
 
-        // 🔥 الحماية: إيلا كان اللوت أصغر من 0.01
+        // 🔥 تحويل اللوت إيلا كان حساب سنت (اللوت فـ السنت كيعطيك 100 ضعف المساحة)
+        if (isCentAccount) {
+            finalDisplaySize = finalDisplaySize * 100;
+        }
+
+        // 🔥 الحماية: الحد الأدنى ديما هو 0.01 (سواء سنت أو عادي)
         if (finalDisplaySize > 0 && finalDisplaySize < 0.01) {
             finalDisplaySize = 0.01;
-            actualUnits = entry < 200 ? (0.01 * 100000) : (0.01 * 100);
-            riskAmount = actualUnits * riskPerUnit; // تحديث الخسارة بالدولار باش تعكس الواقع
+            // نرجعو نحسبو الخسارة الحقيقية بالدولار
+            let standardLotEquivalent = isCentAccount ? (0.01 / 100) : 0.01;
+            actualUnits = entry < 200 ? (standardLotEquivalent * 100000) : (standardLotEquivalent * 100);
+            riskAmount = actualUnits * riskPerUnit; 
+        } else {
+            // إيلا كان اللوت فايت 0.01، كنحسبو الربح والخسارة بدقة
+            let standardLotEquivalent = isCentAccount ? (finalDisplaySize / 100) : finalDisplaySize;
+            actualUnits = entry < 200 ? (standardLotEquivalent * 100000) : (standardLotEquivalent * 100);
         }
     } else if (currentMarketType === 'crypto' || currentMarketType === 'stock') {
         finalDisplaySize = units;
         actualUnits = units;
     }
 
-    // 5. حساب الربح الإجمالي
+    // 5. حساب الربح الإجمالي بالدولار
     const rewardPerUnit = Math.abs(tp - entry);
     const totalProfit = actualUnits * rewardPerUnit;
 
