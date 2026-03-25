@@ -1373,40 +1373,51 @@ window.calculateRisk = function() {
     const sl = parseFloat(document.getElementById('res-sl').innerText) || 0;
     const tp = parseFloat(document.getElementById('res-tp').innerText) || 0;
 
-    // 1. حساب مبلغ المخاطرة
-    const riskAmount = (balance * riskPercent) / 100;
+    // 1. حساب مبلغ المخاطرة المبدئي
+    let riskAmount = (balance * riskPercent) / 100;
     
     // 2. حساب المسافة بين الدخول ووقف الخسارة
     let riskPerUnit = Math.abs(entry - sl) || 1;
     
-    // 3. حساب عدد الوحدات (الأسهم أو الحبات المطلوبة)
+    // 3. حساب عدد الوحدات المطلوبة نظرياً
     let units = riskAmount / riskPerUnit;
     let finalDisplaySize = units;
+    let actualUnits = units; // هادي غنستعملوها باش نحسبو الربح والخسارة د بصح
 
-    // 🚨 4. تطبيق المعايير الدولية (International Standards)
+    // 🚨 4. تطبيق معايير Exness والحد الأدنى (0.01)
     if (currentMarketType === 'forex') {
         if (entry < 200) { 
-            // أزواج العملات (EURUSD, GBPUSD...) المعيار هو 100,000
+            // أزواج العملات (EURUSD...)
             finalDisplaySize = units / 100000;
         } else {
-            // الذهب (XAUUSD) والمؤشرات المعيار العالمي هو 100
+            // الذهب (XAUUSD)
             finalDisplaySize = units / 100;
         }
+
+        // 🔥 الحماية: إيلا كان اللوت أصغر من 0.01، نفرضو 0.01 ونحسبو الخسارة الحقيقية
+        if (finalDisplaySize > 0 && finalDisplaySize < 0.01) {
+            finalDisplaySize = 0.01;
+            actualUnits = entry < 200 ? (0.01 * 100000) : (0.01 * 100);
+            riskAmount = actualUnits * riskPerUnit; // تحديث الخسارة بالدولار
+        }
     } else if (currentMarketType === 'crypto' || currentMarketType === 'stock') {
-        // الكريبتو والأسهم: كنعطيو النتيجة بـ "الوحدات/الأسهم" (Units/Shares)
-        // حيت كل Broker كيفاش كيحسبهم، المتداول كياخد الرقم وكيدخلو كـ أسهم
         finalDisplaySize = units;
+        actualUnits = units;
     }
 
     // 5. حساب الربح الإجمالي
     const rewardPerUnit = Math.abs(tp - entry);
-    const totalProfit = units * rewardPerUnit;
+    const totalProfit = actualUnits * rewardPerUnit;
 
     // 6. عرض النتائج فـ الشاشة
     document.getElementById('calc-risk-amount').innerText = riskAmount.toFixed(2);
     
-    // إيلا كان الرقم صغير، كنبينو 4 أرقام ورا الفاصلة للدقة
-    document.getElementById('calc-lot-size').innerText = finalDisplaySize < 0.01 && finalDisplaySize > 0 ? finalDisplaySize.toFixed(4) : finalDisplaySize.toFixed(2);
+    // الفوركس ديما كيبين 2 أرقام كأقصى حد، الكريبتو كيبين 4 إيلا كان الرقم صغير
+    if (currentMarketType === 'crypto' && finalDisplaySize > 0 && finalDisplaySize < 0.01) {
+        document.getElementById('calc-lot-size').innerText = finalDisplaySize.toFixed(4);
+    } else {
+        document.getElementById('calc-lot-size').innerText = finalDisplaySize.toFixed(2);
+    }
     
     document.getElementById('calc-profit-amount').innerText = totalProfit.toFixed(2);
     document.getElementById('res-rr').innerText = (rewardPerUnit / riskPerUnit).toFixed(2);
