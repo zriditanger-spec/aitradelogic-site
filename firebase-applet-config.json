@@ -1,9 +1,8 @@
 {
-  "projectId": "gen-lang-client-0788100187",
-  "appId": "1:309966959321:web:4eac1ea34b26eb693f04c8",
-  "apiKey": "AIzaSyCyMzYZ4vKGgRy22YbdOv5NW-_oIXE5Ix4",
-  "authDomain": "auth.aitradelogic.com",
-  "firestoreDatabaseId": "ai-studio-27929234-16e8-41ec-9144-e052695bc60d",
-  "storageBucket": "gen-lang-client-0788100187.firebasestorage.app",
-  "messagingSenderId": "309966959321"
+  "projectId": "aitradelogic-web",
+  "appId": "1:141380907293:web:0cf476901844a2c4224db7",
+  "apiKey": "AIzaSyCepII4E8GAx2kB7IN6zYsY61a7cTqjFc0",
+  "authDomain": "aitradelogic-web.firebaseapp.com",
+  "storageBucket": "aitradelogic-web.firebasestorage.app",
+  "messagingSenderId": "141380907293"
 }
