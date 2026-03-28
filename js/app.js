@@ -760,20 +760,21 @@ let typingTimeout;
 window.typeText = function(elementId, text, speed = 10) {
     const element = document.getElementById(elementId);
     if (!element) return Promise.resolve();
+    
     element.setAttribute('data-full-text', text);
     element.textContent = '';
     let i = 0;
     if(typingTimeout) clearTimeout(typingTimeout);
+    
     return new Promise(resolve => {
         function type() {
             if (i < text.length) {
-                // 🚀 كنزيدو 5 حروف دقة وحدة باش نخففو على الـ DOM
-                element.textContent += text.slice(i, i + 5);
-                i += 5;
-                requestAnimationFrame(() => {
-                    typingTimeout = setTimeout(type, speed);
-                });
-            } else { resolve(); }
+                element.textContent += text.charAt(i);
+                i++;
+                typingTimeout = setTimeout(type, speed);
+            } else {
+                resolve();
+            }
         }
         type();
     });

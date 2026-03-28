@@ -125,7 +125,7 @@
             </div>
 
             <!-- Body (Rows/Cards) -->
-            <div id="predictions-table-body" class="flex flex-col divide-y divide-slate-800/50" style="min-height: 1000px;">
+            <div id="predictions-table-body" class="flex flex-col divide-y divide-slate-800/50">
                 <!-- Loading State -->
                 <div class="px-6 py-12 text-center text-slate-500 flex items-center justify-center gap-3">
                     <svg class="w-5 h-5 animate-spin text-cyan-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -265,13 +265,15 @@
     <script>
         // 📱 SCRIPT MENU MOBILE (Burger)
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-    const menu = document.getElementById('mobile-menu');
-    // كنستعملو requestAnimationFrame باش نأكدو للمتصفح بلي هاد التغيير هو الأولية
-    requestAnimationFrame(() => {
-        menu.classList.toggle('hidden');
-        menu.classList.toggle('flex');
-    });
-});
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        });
     </script>
     <script src="/js/system-core.js"></script>
 </body>
