@@ -38,13 +38,6 @@
             });
         })();
     </script>
-    <script>
-        // 🚨 CRITICAL: Handle shared links redirect to Worker if Cloudflare routing is not yet set up
-        const CMS_URL = "https://ai-trade-cms.zridi-tanger.workers.dev/";
-        if ((window.location.pathname.startsWith('/blog/') || window.location.pathname.startsWith('/news/')) && !window.location.hostname.includes('workers.dev')) {
-            window.location.href = CMS_URL.replace(/\/$/, '') + window.location.pathname + window.location.search;
-        }
-    </script>
 </head>
 <body class="selection:bg-cyan-500/30 overflow-x-hidden bg-[#060B14] flex flex-col min-h-screen">
 

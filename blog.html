@@ -38,13 +38,6 @@
             });
         })();
     </script>
-    <script>
-        // 🚨 CRITICAL: Handle shared links redirect to Worker if Cloudflare routing is not yet set up
-        const CMS_URL = "https://ai-trade-cms.zridi-tanger.workers.dev/";
-        if ((window.location.pathname.startsWith('/blog/') || window.location.pathname.startsWith('/news/')) && !window.location.hostname.includes('workers.dev')) {
-            window.location.href = CMS_URL.replace(/\/$/, '') + window.location.pathname + window.location.search;
-        }
-    </script>
 </head>
 <body class="selection:bg-cyan-500/30 overflow-x-hidden bg-[#060B14] flex flex-col min-h-screen">
 
@@ -110,7 +103,7 @@
     <main class="flex-1 max-w-7xl mx-auto px-6 py-20 w-full">
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight" data-i18n="latest_insights">Latest <span class="text-cyan-400 italic">Insights</span></h1>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto" data-i18n="blog_sub">In-depth analysis, trading strategies, and expert perspectives.</p>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto" data-i18n="insights_sub">In-depth analysis, trading strategies, and expert perspectives.</p>
         </div>
 
         <div id="ad-news-top" class="hidden max-w-6xl mx-auto mb-12 flex justify-center w-full">
@@ -225,34 +218,34 @@
                 const readTxt = translations[currentLang]?.read_full_blog || "Read Full Article";
                 
                 if(blogItems && blogItems.length > 0) {
-                    container.innerHTML = blogItems.map(news => `
-                        <a href="${news.url}" class="group bg-[#0A101D] border border-slate-800/50 rounded-2xl p-6 hover:border-cyan-500/30 transition-all shadow-lg flex flex-col sm:flex-row gap-6 items-start">
+                    container.innerHTML = blogItems.map(news => \`
+                        <a href="\${news.url}" class="group bg-[#0A101D] border border-slate-800/50 rounded-2xl p-6 hover:border-cyan-500/30 transition-all shadow-lg flex flex-col sm:flex-row gap-6 items-start">
                             <div class="w-full sm:w-48 h-32 shrink-0 rounded-xl overflow-hidden relative">
-                                <img src="${news.image}" loading="lazy" width="400" height="256" onerror="this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=65&w=400&fm=webp&fit=crop'" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt="${news.title}">
+                                <img src="\${news.image}" loading="lazy" width="400" height="256" onerror="this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=65&w=400&fm=webp&fit=crop'" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt="\${news.title}">
                                 <div class="absolute top-2 left-2 bg-slate-900/80 backdrop-blur text-white text-[9px] font-bold px-2 py-1 rounded uppercase tracking-widest">
-                                    ${news.source || 'Blog'}
+                                    \${news.source || 'Blog'}
                                 </div>
                             </div>
                             <div class="flex flex-col flex-1 h-full justify-between">
                                 <div>
                                     <div class="flex items-center gap-3 mb-2">
-                                        <span class="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">${news.category}</span>
+                                        <span class="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">\${news.category}</span>
                                         <span class="text-[10px] text-slate-500 flex items-center gap-1">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                            ${news.date}
+                                            \${news.date}
                                         </span>
                                     </div>
-                                    <h3 class="text-lg font-bold text-white mb-2 leading-snug group-hover:text-cyan-400 transition-colors">${news.title}</h3>
-                                    <p class="text-sm text-slate-400 line-clamp-2 leading-relaxed mb-4">${news.excerpt}</p>
+                                    <h3 class="text-lg font-bold text-white mb-2 leading-snug group-hover:text-cyan-400 transition-colors">\${news.title}</h3>
+                                    <p class="text-sm text-slate-400 line-clamp-2 leading-relaxed mb-4">\${news.excerpt}</p>
                                 </div>
                                 <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest group-hover:text-cyan-500 transition-colors flex items-center gap-1">
-                                    ${readTxt} &rarr;
+                                    \${readTxt} &rarr;
                                 </span>
                             </div>
                         </a>
-                    `).join('');
+                    \`).join('');
                 } else {
-                    container.innerHTML = `<p class="text-slate-500 text-center py-10">No insights available at the moment.</p>`;
+                    container.innerHTML = \`<p class="text-slate-500 text-center py-10">No insights available at the moment.</p>\`;
                 }
             }
         });
