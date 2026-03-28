@@ -5,11 +5,6 @@ const CMS_CONFIG = { enabled: false, apiUrl: "", accessToken: "" };
 const ANALYZER_URL = "https://ai-trade-analyzer.zridi-tanger.workers.dev/"; 
 const CMS_URL = "https://ai-trade-cms.zridi-tanger.workers.dev/";
 
-// Fallback for Cloudflare Pages SPA routing if Worker is not configured
-if (window.location.pathname.startsWith('/blog/') || window.location.pathname.startsWith('/news/')) {
-    window.location.href = CMS_URL.replace(/\/$/, '') + window.location.pathname + window.location.search;
-}
-
 let currentMarketType = 'crypto'; 
 let isMarketOpen = true;
 
@@ -219,17 +214,14 @@ async function getArticles() {
         });
         const data = await response.json();
         if (data && data.length > 0) {
-            const isLocal = window.location.protocol === 'file:' || 
-                            window.location.hostname === '127.0.0.1' || 
-                            window.location.hostname === 'localhost' ||
-                            window.location.hostname.includes('.run.app') ||
-                            window.location.hostname.includes('.pages.dev');
             return data.map(post => ({
                 ...post,
-                url: isLocal ? `${CMS_URL}blog/${post.id}` : `/blog/${post.id}`
+                url: `${CMS_URL}article/${post.id}`.replace(/([^:]\/)\/+/g, "$1")
             }));
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error("Error fetching articles:", e);
+    }
     return [];
 }
 
@@ -242,17 +234,14 @@ async function getNewsArticles() {
         });
         const data = await response.json();
         if (data && data.length > 0) {
-            const isLocal = window.location.protocol === 'file:' || 
-                            window.location.hostname === '127.0.0.1' || 
-                            window.location.hostname === 'localhost' ||
-                            window.location.hostname.includes('.run.app') ||
-                            window.location.hostname.includes('.pages.dev');
             return data.map(post => ({
                 ...post,
-                url: isLocal ? `${CMS_URL}news/${post.id}` : `/news/${post.id}`
+                url: `${CMS_URL}news/${post.id}`.replace(/([^:]\/)\/+/g, "$1")
             }));
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error("Error fetching news articles:", e);
+    }
     return [];
 }
 
