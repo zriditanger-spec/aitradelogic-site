@@ -6,7 +6,7 @@ const ANALYZER_URL = "https://ai-trade-analyzer.zridi-tanger.workers.dev/";
 const CMS_URL = "https://ai-trade-cms.zridi-tanger.workers.dev/";
 
 // Fallback for Cloudflare Pages SPA routing if Worker is not configured
-if (window.location.pathname.startsWith('/blog/') || window.location.pathname.startsWith('/news/')) {
+if ((window.location.pathname.startsWith('/blog/') || window.location.pathname.startsWith('/news/')) && !window.location.hostname.includes('workers.dev')) {
     window.location.href = CMS_URL.replace(/\/$/, '') + window.location.pathname + window.location.search;
 }
 
@@ -229,7 +229,9 @@ async function getArticles() {
                 url: isLocal ? `${CMS_URL}blog/${post.id}` : `/blog/${post.id}`
             }));
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error("Error fetching articles:", e);
+    }
     return [];
 }
 
@@ -252,7 +254,9 @@ async function getNewsArticles() {
                 url: isLocal ? `${CMS_URL}news/${post.id}` : `/news/${post.id}`
             }));
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error("Error fetching news articles:", e);
+    }
     return [];
 }
 
