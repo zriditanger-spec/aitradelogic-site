@@ -3,7 +3,7 @@
 // ==========================================
 const CMS_CONFIG = { enabled: false, apiUrl: "", accessToken: "" };
 const ANALYZER_URL = "https://ai-trade-analyzer.zridi-tanger.workers.dev/"; 
-const CMS_URL = "https://ai-trade-cms.zridi-tanger.workers.dev/";
+const CMS_URL = "https://aitradelogic.com/";
 
 let currentMarketType = 'crypto'; 
 let isMarketOpen = true;
