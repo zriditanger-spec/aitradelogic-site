@@ -393,6 +393,11 @@ window.changeCoin = function(symbol, name) {
     updateTerminalLinks();
 };
 
+window.openFullChart = function() {
+    const tvUrl = `https://www.tradingview.com/chart/?symbol=${currentSymbol}`;
+    window.open(tvUrl, '_blank');
+};
+
 window.changeTimeframe = function(tf, btnElement) {
     currentTimeframe = tf;
     document.querySelectorAll('.tf-btn').forEach(btn => {
@@ -1561,7 +1566,7 @@ function updateHighlight(targetId, doScroll = true) {
         highlighter.style.left = (window.scrollX + window.innerWidth / 2) + 'px';
         highlighter.style.width = '0px';
         highlighter.style.height = '0px';
-        highlighter.style.opacity = '1';
+        highlighter.style.opacity = '0';
         
         if (overlay) {
             overlay.classList.remove('justify-start', 'pt-28');
