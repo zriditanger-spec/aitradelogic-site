@@ -394,8 +394,36 @@ window.changeCoin = function(symbol, name) {
 };
 
 window.openFullChart = function() {
-    const tvUrl = `https://www.tradingview.com/chart/?symbol=${currentSymbol}`;
-    window.open(tvUrl, '_blank');
+    const chartWrapper = document.getElementById('tv-chart-container').parentElement;
+    const isFullscreen = chartWrapper.classList.contains('fixed');
+    
+    if (!isFullscreen) {
+        // Enter fullscreen
+        chartWrapper.classList.remove('relative', 'flex-1', 'min-h-[500px]', 'rounded-2xl');
+        chartWrapper.classList.add('fixed', 'inset-0', 'z-[100]', 'bg-[#030712]', 'rounded-none');
+        document.body.style.overflow = 'hidden';
+        
+        // Add close button if it doesn't exist
+        let closeBtn = document.getElementById('fullscreen-close-btn');
+        if (!closeBtn) {
+            closeBtn = document.createElement('button');
+            closeBtn.id = 'fullscreen-close-btn';
+            closeBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+            closeBtn.className = 'absolute top-3 right-3 z-[110] bg-slate-800/90 hover:bg-red-500/80 text-white p-2 rounded-lg backdrop-blur-md shadow-lg border border-slate-600 transition-colors';
+            closeBtn.onclick = window.openFullChart;
+            chartWrapper.appendChild(closeBtn);
+        } else {
+            closeBtn.style.display = 'block';
+        }
+    } else {
+        // Exit fullscreen
+        chartWrapper.classList.remove('fixed', 'inset-0', 'z-[100]', 'bg-[#030712]', 'rounded-none');
+        chartWrapper.classList.add('relative', 'flex-1', 'min-h-[500px]', 'rounded-2xl');
+        document.body.style.overflow = '';
+        
+        const closeBtn = document.getElementById('fullscreen-close-btn');
+        if (closeBtn) closeBtn.style.display = 'none';
+    }
 };
 
 window.changeTimeframe = function(tf, btnElement) {
