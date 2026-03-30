@@ -98,7 +98,15 @@ async function loadAllCryptoPairs() {
             }));
         
         if (usdtPairs.length > 0) {
-            marketAssets.crypto = usdtPairs;
+            // Keep the hardcoded USD pairs at the beginning
+            const usdPairs = [
+                { name: "BTC-USD", symbol: "COINBASE:BTCUSD" }, { name: "ETH-USD", symbol: "COINBASE:ETHUSD" },
+                { name: "SOL-USD", symbol: "COINBASE:SOLUSD" }, { name: "XRP-USD", symbol: "COINBASE:XRPUSD" }
+            ];
+            
+            // Filter out the USDT versions of the USD pairs we just added to avoid duplicates if needed, 
+            // but keeping them is fine too. Let's just prepend the USD pairs.
+            marketAssets.crypto = [...usdPairs, ...usdtPairs];
         }
     } catch (e) {
         console.error("Failed to load Binance pairs, using fallback list.");
