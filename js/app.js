@@ -8,8 +8,8 @@ const CMS_URL = "https://aitradelogic.com/";
 let currentMarketType = 'crypto'; 
 let isMarketOpen = true;
 
-let currentSymbol = 'BINANCE:BTCUSDT'; 
-let currentAssetName = 'BTC-USDT';
+let currentSymbol = 'COINBASE:BTCUSD'; 
+let currentAssetName = 'BTC-USD';
 let currentTimeframe = "60"; 
 let currentLang = localStorage.getItem('app_lang') || 'EN'; 
 let uploadedImageBase64 = null;
@@ -53,6 +53,8 @@ window.changeLanguage = function(lang) {
 // ==========================================
 const marketAssets = {
     crypto: [
+        { name: "BTC-USD", symbol: "COINBASE:BTCUSD" }, { name: "ETH-USD", symbol: "COINBASE:ETHUSD" },
+        { name: "SOL-USD", symbol: "COINBASE:SOLUSD" }, { name: "XRP-USD", symbol: "COINBASE:XRPUSD" },
         { name: "BTC-USDT", symbol: "BINANCE:BTCUSDT" }, { name: "ETH-USDT", symbol: "BINANCE:ETHUSDT" },
         { name: "SOL-USDT", symbol: "BINANCE:SOLUSDT" }, { name: "XRP-USDT", symbol: "BINANCE:XRPUSDT" },
         { name: "BNB-USDT", symbol: "BINANCE:BNBUSDT" }, { name: "ADA-USDT", symbol: "BINANCE:ADAUSDT" },
