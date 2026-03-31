@@ -8,8 +8,8 @@ const CMS_URL = "https://aitradelogic.com/";
 let currentMarketType = 'crypto'; 
 let isMarketOpen = true;
 
-let currentSymbol = 'COINBASE:BTCUSD'; 
-let currentAssetName = 'BTC-USD';
+let currentSymbol = 'BINANCE:BTCUSDT'; 
+let currentAssetName = 'BTC-USDT';
 let currentTimeframe = "60"; 
 let currentLang = localStorage.getItem('app_lang') || 'EN'; 
 let uploadedImageBase64 = null;
@@ -53,8 +53,6 @@ window.changeLanguage = function(lang) {
 // ==========================================
 const marketAssets = {
     crypto: [
-        { name: "BTC-USD", symbol: "COINBASE:BTCUSD" }, { name: "ETH-USD", symbol: "COINBASE:ETHUSD" },
-        { name: "SOL-USD", symbol: "COINBASE:SOLUSD" }, { name: "XRP-USD", symbol: "COINBASE:XRPUSD" },
         { name: "BTC-USDT", symbol: "BINANCE:BTCUSDT" }, { name: "ETH-USDT", symbol: "BINANCE:ETHUSDT" },
         { name: "SOL-USDT", symbol: "BINANCE:SOLUSDT" }, { name: "XRP-USDT", symbol: "BINANCE:XRPUSDT" },
         { name: "BNB-USDT", symbol: "BINANCE:BNBUSDT" }, { name: "ADA-USDT", symbol: "BINANCE:ADAUSDT" },
@@ -98,15 +96,7 @@ async function loadAllCryptoPairs() {
             }));
         
         if (usdtPairs.length > 0) {
-            // Keep the hardcoded USD pairs at the beginning
-            const usdPairs = [
-                { name: "BTC-USD", symbol: "COINBASE:BTCUSD" }, { name: "ETH-USD", symbol: "COINBASE:ETHUSD" },
-                { name: "SOL-USD", symbol: "COINBASE:SOLUSD" }, { name: "XRP-USD", symbol: "COINBASE:XRPUSD" }
-            ];
-            
-            // Filter out the USDT versions of the USD pairs we just added to avoid duplicates if needed, 
-            // but keeping them is fine too. Let's just prepend the USD pairs.
-            marketAssets.crypto = [...usdPairs, ...usdtPairs];
+            marketAssets.crypto = usdtPairs;
         }
     } catch (e) {
         console.error("Failed to load Binance pairs, using fallback list.");
@@ -224,14 +214,13 @@ async function getArticles() {
         });
         const data = await response.json();
         if (data && data.length > 0) {
+            const isLocal = window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
             return data.map(post => ({
                 ...post,
-                url: `${CMS_URL}article/${post.id}`.replace(/([^:]\/)\/+/g, "$1")
+                url: isLocal ? `${CMS_URL}blog/${post.id}` : `/blog/${post.id}`
             }));
         }
-    } catch (e) {
-        console.error("Error fetching articles:", e);
-    }
+    } catch (e) {}
     return [];
 }
 
@@ -244,14 +233,13 @@ async function getNewsArticles() {
         });
         const data = await response.json();
         if (data && data.length > 0) {
+            const isLocal = window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
             return data.map(post => ({
                 ...post,
-                url: `${CMS_URL}news/${post.id}`.replace(/([^:]\/)\/+/g, "$1")
+                url: isLocal ? `${CMS_URL}news/${post.id}` : `/news/${post.id}`
             }));
         }
-    } catch (e) {
-        console.error("Error fetching news articles:", e);
-    }
+    } catch (e) {}
     return [];
 }
 
@@ -278,7 +266,7 @@ async function renderDynamicSections() {
         blogContainer.innerHTML = articles.slice(0, 4).map(post => `
             <a href="${post.url}" target="_blank" class="group bg-[#0A101D] border border-slate-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all flex flex-col h-full shadow-lg">
                 <div class="h-40 overflow-hidden relative">
-                    <img src="${post.image}" loading="lazy" width="400" height="160" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=65&w=400&fm=webp&fit=crop'" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt="${post.title}">
+                    <img src="${post.image}" loading="lazy" width="400" height="160" onerror="this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=65&w=400&fm=webp&fit=crop'" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt="${post.title}">
                     <div class="absolute top-3 left-3 bg-cyan-600 text-white text-[9px] font-bold px-2 py-1 rounded uppercase">${post.category}</div>
                 </div>
                 <div class="p-5 flex flex-col flex-1">
@@ -401,39 +389,6 @@ window.changeCoin = function(symbol, name) {
     window.history.pushState({}, '', newUrl);
 
     updateTerminalLinks();
-};
-
-window.openFullChart = function() {
-    const chartWrapper = document.getElementById('tv-chart-container').parentElement;
-    const isFullscreen = chartWrapper.classList.contains('fixed');
-    
-    if (!isFullscreen) {
-        // Enter fullscreen
-        chartWrapper.classList.remove('relative', 'flex-1', 'min-h-[500px]', 'rounded-2xl');
-        chartWrapper.classList.add('fixed', 'inset-0', 'z-[100]', 'bg-[#030712]', 'rounded-none');
-        document.body.style.overflow = 'hidden';
-        
-        // Add close button if it doesn't exist
-        let closeBtn = document.getElementById('fullscreen-close-btn');
-        if (!closeBtn) {
-            closeBtn = document.createElement('button');
-            closeBtn.id = 'fullscreen-close-btn';
-            closeBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
-            closeBtn.className = 'absolute top-3 right-3 z-[110] bg-slate-800/90 hover:bg-red-500/80 text-white p-2 rounded-lg backdrop-blur-md shadow-lg border border-slate-600 transition-colors';
-            closeBtn.onclick = window.openFullChart;
-            chartWrapper.appendChild(closeBtn);
-        } else {
-            closeBtn.style.display = 'block';
-        }
-    } else {
-        // Exit fullscreen
-        chartWrapper.classList.remove('fixed', 'inset-0', 'z-[100]', 'bg-[#030712]', 'rounded-none');
-        chartWrapper.classList.add('relative', 'flex-1', 'min-h-[500px]', 'rounded-2xl');
-        document.body.style.overflow = '';
-        
-        const closeBtn = document.getElementById('fullscreen-close-btn');
-        if (closeBtn) closeBtn.style.display = 'none';
-    }
 };
 
 window.changeTimeframe = function(tf, btnElement) {
@@ -1604,7 +1559,7 @@ function updateHighlight(targetId, doScroll = true) {
         highlighter.style.left = (window.scrollX + window.innerWidth / 2) + 'px';
         highlighter.style.width = '0px';
         highlighter.style.height = '0px';
-        highlighter.style.opacity = '0';
+        highlighter.style.opacity = '1';
         
         if (overlay) {
             overlay.classList.remove('justify-start', 'pt-28');

@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-        // 🚨 CRITICAL: Handle shared links redirect to Worker if Cloudflare routing is not yet set up
-        // This must be at the very top of the head to execute before anything else
-        if ((window.location.pathname.startsWith('/blog/') || window.location.pathname.startsWith('/news/') || window.location.pathname.startsWith('/article/')) && !window.location.hostname.includes('workers.dev')) {
-            window.location.replace("https://ai-trade-cms.zridi-tanger.workers.dev" + window.location.pathname + window.location.search);
-        }
-    </script>
-    <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>aitradelogic.com | Advanced Terminal</title>
@@ -399,7 +391,7 @@
     <!-- SCRIPTS -->
     <script src="https://s3.tradingview.com/tv.js"></script>
     <script src="js/translations.js"></script>
-    <script defer src="js/app.js"></script>
+    <script src="js/app.js"></script>
     
     <script>
         // 📱 SCRIPT MENU MOBILE (Burger)
@@ -451,7 +443,7 @@
                             <a href="app.html?symbol=BINANCE:${item.coin}USDT&name=${item.name}" class="bg-[#0A101D] border border-slate-800 rounded-3xl p-6 shadow-xl hover:border-blue-500/50 transition-all group block min-w-[300px] shrink-0 snap-center md:min-w-0" dir="${currentLang === 'AR' ? 'rtl' : 'ltr'}">
                                 <div class="flex justify-between items-start mb-6 border-b border-slate-800/50 pb-4">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.onerror=null; this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-10 h-10">
+                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-10 h-10">
                                         <div>
                                             <h3 class="font-black text-white text-lg leading-tight">${item.coin}</h3>
                                             <p class="text-[10px] text-slate-500 uppercase tracking-widest">${item.name}</p>

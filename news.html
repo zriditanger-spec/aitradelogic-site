@@ -1,20 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-        // 🚨 CRITICAL: Handle shared links redirect to Worker if Cloudflare routing is not yet set up
-        // This must be at the very top of the head to execute before anything else
-        if ((window.location.pathname.startsWith('/blog/') || window.location.pathname.startsWith('/news/') || window.location.pathname.startsWith('/article/')) && !window.location.hostname.includes('workers.dev')) {
-            window.location.replace("https://ai-trade-cms.zridi-tanger.workers.dev" + window.location.pathname + window.location.search);
-        }
-    </script>
-    <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AITradeLogic News - Latest market news and updates for Crypto, Forex, and Stocks.">
     <title>Market News | aitradelogic.com</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
@@ -210,8 +200,8 @@
             </div>
         </div>
     </footer>
-    <script defer src="js/translations.js"></script>
-    <script defer src="js/app.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/app.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', async () => {
             const savedLang = localStorage.getItem('app_lang');
@@ -230,7 +220,7 @@
                     container.innerHTML = newsItems.map(news => `
                         <a href="${news.url}" class="group bg-[#0A101D] border border-slate-800/50 rounded-2xl p-6 hover:border-cyan-500/30 transition-all shadow-lg flex flex-col sm:flex-row gap-6 items-start">
                             <div class="w-full sm:w-48 h-32 shrink-0 rounded-xl overflow-hidden relative">
-                                <img src="${news.image}" loading="lazy" width="400" height="256" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=65&w=400&fm=webp&fit=crop'" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt="${news.title}">
+                                <img src="${news.image}" loading="lazy" width="400" height="256" onerror="this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=65&w=400&fm=webp&fit=crop'" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" alt="${news.title}">
                                 <div class="absolute top-2 left-2 bg-slate-900/80 backdrop-blur text-white text-[9px] font-bold px-2 py-1 rounded uppercase tracking-widest">
                                     ${news.source || 'Market News'}
                                 </div>
@@ -273,6 +263,6 @@
             }
         });
     </script>
-    <script defer src="/js/system-core.js"></script>
+    <script src="/js/system-core.js"></script>
 </body>
 </html>

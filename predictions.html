@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AITradeLogic Predictions - AI-powered trading predictions for Crypto, Forex, and Stocks.">
     <title>AI Predictions | aitradelogic.com</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     
@@ -163,8 +160,8 @@
         </div>
     </footer>
 
-    <script defer src="js/translations.js"></script>
-    <script defer src="js/app.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/app.js"></script>
     <script>
         async function loadPredictions() {
             try {
@@ -202,7 +199,7 @@
                                 <!-- Asset & Trend (Mobile Header) -->
                                 <div class="flex items-center justify-between w-full lg:w-auto mb-3 lg:mb-0">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.onerror=null; this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-8 h-8 lg:w-6 lg:h-6" loading="lazy" alt="${item.coin} logo">
+                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-8 h-8 lg:w-6 lg:h-6">
                                         <span class="font-bold text-white text-base lg:text-sm">${item.name}</span>
                                         <span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded">${item.coin}</span>
                                     </div>
@@ -278,6 +275,6 @@
             }
         });
     </script>
-    <script defer src="/js/system-core.js"></script>
+    <script src="/js/system-core.js"></script>
 </body>
 </html>
