@@ -10,11 +10,9 @@
     </script>
     <base href="/">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AITradeLogic - Advanced AI-driven trading predictions, market news, and analytics for Crypto, Forex, and Stocks.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>aitradelogic.com | Advanced Terminal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css"> 
     
@@ -399,8 +397,8 @@
     </footer>
 
     <!-- SCRIPTS -->
-    <script defer src="https://s3.tradingview.com/tv.js"></script>
-    <script defer src="js/translations.js"></script>
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <script src="js/translations.js"></script>
     <script defer src="js/app.js"></script>
     
     <script>
@@ -453,7 +451,7 @@
                             <a href="app.html?symbol=BINANCE:${item.coin}USDT&name=${item.name}" class="bg-[#0A101D] border border-slate-800 rounded-3xl p-6 shadow-xl hover:border-blue-500/50 transition-all group block min-w-[300px] shrink-0 snap-center md:min-w-0" dir="${currentLang === 'AR' ? 'rtl' : 'ltr'}">
                                 <div class="flex justify-between items-start mb-6 border-b border-slate-800/50 pb-4">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.onerror=null; this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-10 h-10" loading="lazy" alt="${item.coin} logo">
+                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.onerror=null; this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-10 h-10">
                                         <div>
                                             <h3 class="font-black text-white text-lg leading-tight">${item.coin}</h3>
                                             <p class="text-[10px] text-slate-500 uppercase tracking-widest">${item.name}</p>
@@ -553,11 +551,8 @@
             setInterval(updateHomeWhaleFeed, Math.floor(Math.random() * (10000 - 6000) + 6000)); 
         }
 
-        // تشغيل الوظائف بعد تحميل الصفحة والسكربتات
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(loadHomePredictions, 200);
-            fetchFearAndGreed();
-        });
+        // تشغيل جلب التوقعات بعد تحميل الصفحة
+        setTimeout(loadHomePredictions, 200);
 
         // Fetch Real Fear & Greed Index Data
         async function fetchFearAndGreed() {
@@ -679,7 +674,7 @@
             setTimeout(startScroll, 2000);
         });
     </script>
-    <script defer src="/js/system-core.js"></script>
+    <script src="/js/system-core.js"></script>
 </body>
 </html>
     
