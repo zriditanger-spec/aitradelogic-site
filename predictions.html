@@ -4,36 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Predictions | aitradelogic.com</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
     
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        html { background-color: #060B14; }
+        html { background-color: #060B14; scroll-behavior: smooth; }
         body { overflow-x: clip; max-width: 100vw; }
         ::-webkit-scrollbar { width: 6px; background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; cursor: pointer; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+        .tradingview-widget-container { overflow: hidden !important; max-width: 100%; }
+        #tv-chart-container .tradingview-widget-container { height: 100% !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         select { -webkit-appearance: none; -moz-appearance: none; appearance: none; } 
         select option { background-color: #0A101D; color: #38bdf8; font-weight: bold; }
-        .anti-flash-hidden { opacity: 0; }
+        .nav-link.active { color: #22d3ee; border-left-color: #22d3ee; background-color: rgba(34, 211, 238, 0.05); }
+        .anti-flash, .anti-flash-hidden { opacity: 0; }
         .anti-flash-visible { opacity: 1; transition: opacity 0.2s ease-in-out; }
-        #predictions-table-body {
-            min-height: 800px;
-        }
     </style>
 
     <script>
-        const savedLang = localStorage.getItem('app_lang') || 'EN';
-        document.documentElement.lang = savedLang.toLowerCase();
-        document.documentElement.dir = savedLang === 'AR' ? 'rtl' : 'ltr';
-        document.documentElement.classList.add('anti-flash-hidden');
-        window.addEventListener('DOMContentLoaded', () => {
-            if (savedLang === 'AR') document.body.style.fontFamily = '"Cairo", sans-serif';
-            setTimeout(() => { 
-                document.documentElement.classList.remove('anti-flash-hidden');
-                document.documentElement.classList.add('anti-flash-visible');
-            }, 150);
-        });
+        (function() {
+            const savedLang = localStorage.getItem('app_lang') || 'EN';
+            document.documentElement.lang = savedLang.toLowerCase();
+            document.documentElement.dir = savedLang === 'AR' ? 'rtl' : 'ltr';
+            
+            // On ajoute la classe CSS proprement au lieu de forcer l'écriture
+            if (savedLang === 'AR') {
+                document.documentElement.classList.add('font-cairo');
+            }
+            
+            document.documentElement.classList.add('anti-flash-hidden');
+            window.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    document.documentElement.classList.remove('anti-flash-hidden');
+                    document.documentElement.classList.add('anti-flash-visible');
+                }, 150);
+            });
+        })();
     </script>
 </head>
 <body class="selection:bg-cyan-500/30 overflow-x-hidden bg-[#060B14] flex flex-col min-h-screen text-white">
@@ -199,7 +213,7 @@
                                 <!-- Asset & Trend (Mobile Header) -->
                                 <div class="flex items-center justify-between w-full lg:w-auto mb-3 lg:mb-0">
                                     <div class="flex items-center gap-3">
-                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" class="w-8 h-8 lg:w-6 lg:h-6">
+                                        <img src="https://cryptologos.cc/logos/${item.name.toLowerCase().replace(' ', '-')}-${item.coin.toLowerCase()}-logo.png" onerror="this.src='https://cryptologos.cc/logos/bitcoin-btc-logo.png'" width="32" height="32" class="w-8 h-8 lg:w-6 lg:h-6">
                                         <span class="font-bold text-white text-base lg:text-sm">${item.name}</span>
                                         <span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded">${item.coin}</span>
                                     </div>

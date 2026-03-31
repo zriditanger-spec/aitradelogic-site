@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market News | aitradelogic.com</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        html { background-color: #060B14; }
+        html { background-color: #060B14; scroll-behavior: smooth; }
         body { overflow-x: clip; max-width: 100vw; }
         ::-webkit-scrollbar { width: 6px; background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; cursor: pointer; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
         .tradingview-widget-container { overflow: hidden !important; max-width: 100%; }
+        #tv-chart-container .tradingview-widget-container { height: 100% !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         select { -webkit-appearance: none; -moz-appearance: none; appearance: none; } 
         select option { background-color: #0A101D; color: #38bdf8; font-weight: bold; }
-        .anti-flash { opacity: 0; }
+        .nav-link.active { color: #22d3ee; border-left-color: #22d3ee; background-color: rgba(34, 211, 238, 0.05); }
+        .anti-flash, .anti-flash-hidden { opacity: 0; }
+        .anti-flash-visible { opacity: 1; transition: opacity 0.2s ease-in-out; }
     </style>
 
     <script>
@@ -25,15 +34,18 @@
             const savedLang = localStorage.getItem('app_lang') || 'EN';
             document.documentElement.lang = savedLang.toLowerCase();
             document.documentElement.dir = savedLang === 'AR' ? 'rtl' : 'ltr';
+            
+            // On ajoute la classe CSS proprement au lieu de forcer l'écriture
             if (savedLang === 'AR') {
-                document.write('<style>body { font-family: "Cairo", sans-serif !important; }</style>');
+                document.documentElement.classList.add('font-cairo');
             }
-            document.documentElement.classList.add('anti-flash');
+            
+            document.documentElement.classList.add('anti-flash-hidden');
             window.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
-                    document.documentElement.style.transition = 'opacity 0.2s ease';
-                    document.documentElement.classList.remove('anti-flash');
-                }, 100);
+                    document.documentElement.classList.remove('anti-flash-hidden');
+                    document.documentElement.classList.add('anti-flash-visible');
+                }, 150);
             });
         })();
     </script>
