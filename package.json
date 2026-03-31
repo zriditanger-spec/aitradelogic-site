@@ -1,0 +1,10 @@
+{
+  "name": "ai-trade-logic",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npx tailwindcss -i ./css/style.css -o ./css/tailwind-final.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
