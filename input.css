@@ -1,0 +1,66 @@
+/* ================================================
+   Tailwind CSS - aitradelogic.com
+   Généré automatiquement par fix-tailwind.js
+   ================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================================================
+   CSS PERSONNALISÉ (ton style.css peut rester séparé)
+   ================================================ */
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; background: transparent; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+/* Select */
+select { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+select option { background-color: #0A101D; color: #38bdf8; font-weight: bold; }
+
+/* No scrollbar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Anti flash */
+.anti-flash-hidden { opacity: 0; }
+.anti-flash-visible { opacity: 1; transition: opacity 0.2s ease-in-out; }
+
+/* Glass panel */
+.glass-panel { background: rgba(10, 16, 29, 0.8); backdrop-filter: blur(12px); }
+
+/* Tables (pour le prose du worker) */
+.table-wrapper { 
+    width: 100%; overflow-x: auto; margin-top: 2em; margin-bottom: 2em; 
+    border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); 
+    border: 1px solid #1e293b; background-color: #0A101D; 
+}
+.table-wrapper::-webkit-scrollbar { height: 6px; }
+.table-wrapper::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+
+.prose table { width: 100% !important; border-collapse: collapse; margin: 0 !important; }
+.prose thead { border-bottom: 2px solid #1e293b !important; }
+.prose th { 
+    color: #38bdf8 !important; font-weight: 700; text-transform: uppercase; 
+    font-size: 0.75rem; letter-spacing: 0.05em; padding: 1rem; 
+    text-align: left; border: none !important; 
+}
+.prose td { 
+    padding: 1rem; border-bottom: 1px solid #1e293b !important; 
+    color: #cbd5e1 !important; font-size: 0.875rem; 
+    white-space: nowrap; border-top: none !important; 
+}
+@media (min-width: 768px) { .prose td { white-space: normal; } }
+.prose tr:last-child td { border-bottom: none !important; }
+[dir="rtl"] .prose th, [dir="rtl"] .prose td { text-align: right; }
+
+/* Hero image placeholder */
+.hero-img-wrapper { background-color: #0A101D; min-height: 300px; }
+
+/* Footer fix CLS */
+footer { min-height: 80px; }
+
+/* Nav fix CLS */
+nav { min-height: 64px; }
