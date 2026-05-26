@@ -1,9 +1,13 @@
 // ==========================================
 // 🎯 SMART AD INJECTOR & ANTI-BLOCKER
+// ✅ FIX TBT: Fetch différé à 2s après DOMContentLoaded
 // ==========================================
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     
-    // 🚨 1. الماكينة اللي كتجيب الإعلانات
+    // ✅ FIX TBT: On attend 2s avant de charger les pubs
+    // Ça laisse le navigateur rendre le contenu principal en premier
+    setTimeout(async () => {
+
     const WORKER_URL = "https://ai-trade-cms.zridi-tanger.workers.dev/"; 
 
     try {
@@ -74,14 +78,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Ad Injector Error:", e);
     }
 
-    // 🚨 2. فخ النينجا المضاد للـ Adblock
+    // ✅ FIX TBT: Anti-adblock différé à 5s — totalement non-critique
+    // Avant: 2s après DOMContentLoaded → perturbait le rendu
+    // Après: 5s → le contenu est déjà rendu, l'utilisateur voit la page
     setTimeout(() => {
         const bait = document.createElement('div');
         bait.className = 'pub_300x250 adsbox ad-placement doubleclick';
-        bait.style.height = '1px';
-        bait.style.width = '1px';
-        bait.style.position = 'absolute';
-        bait.style.left = '-9999px';
+        bait.style.cssText = 'height:1px;width:1px;position:absolute;left:-9999px;';
         document.body.appendChild(bait);
 
         setTimeout(() => {
@@ -90,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             bait.remove();
         }, 300);
-    }, 2000);
+    }, 5000); // ✅ 5s au lieu de 2s
 
     function showSupportModal() {
         if(document.getElementById('sys-notice-99')) return;
@@ -127,4 +130,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
         document.body.insertAdjacentHTML('beforeend', modalHtml);
     }
+
+    }, 2000); // ✅ Tout le bloc ads/adblock différé à 2s
 });

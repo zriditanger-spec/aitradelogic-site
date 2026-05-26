@@ -84,23 +84,12 @@ const marketAssets = {
 const blogPosts = [];
 let macroEvents = [{ date: "Syncing...", title: "Connecting AI Engine...", curr: "-", f: "-", p: "-", a: "-", impact: "Low", color: "emerald" }];
 
+// ✅ FIX TBT: Suppression du fetch Binance exchangeInfo (500+ paires, très lourd)
+// On garde la liste statique de 16 paires déjà définie dans marketAssets.crypto
 async function loadAllCryptoPairs() {
-    try {
-        const res = await fetch('https://api.binance.com/api/v3/exchangeInfo');
-        const data = await res.json();
-        const usdtPairs = data.symbols
-            .filter(s => s.quoteAsset === 'USDT' && s.status === 'TRADING')
-            .map(s => ({
-                name: s.baseAsset + '-USDT',
-                symbol: 'BINANCE:' + s.symbol
-            }));
-        
-        if (usdtPairs.length > 0) {
-            marketAssets.crypto = usdtPairs;
-        }
-    } catch (e) {
-        console.error("Failed to load Binance pairs, using fallback list.");
-    }
+    // Désactivé — trop lourd pour le TBT mobile (-400ms)
+    // La liste statique de 16 paires dans marketAssets.crypto est suffisante
+    return;
 }
 
 function renderChart() {
@@ -1000,9 +989,19 @@ window.fetchCredits = async function() {
     }
 };
 
-// Call initFirebase on load
+// ✅ FIX TBT: Firebase chargé après le rendu de la page (2s de délai)
+// Avant: chargé au DOMContentLoaded → bloquait le thread principal
+// Après: chargé après window.load + 2s → libère le thread pour le rendu
 document.addEventListener('DOMContentLoaded', () => {
-    initFirebase();
+    // Firebase se charge 2 secondes après le chargement complet
+    // Ça laisse le temps au navigateur de rendre la page et le chart en premier
+    if (document.readyState === 'complete') {
+        setTimeout(() => initFirebase(), 2000);
+    } else {
+        window.addEventListener('load', () => {
+            setTimeout(() => initFirebase(), 2000);
+        });
+    }
 });
 
 window.closeTelegramModal = function() {
@@ -1633,7 +1632,7 @@ function updateOnboardingUI() {
 }
 
 // ==========================================
-// 8. INITIALISATION AU DÉMARRAGE
+// 8. INITIALISATION AU DÉMARRAGE — OPTIMISÉ TBT
 // ==========================================
 window.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -1659,6 +1658,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         promptContainer.insertAdjacentHTML('afterend', uploadHtml);
     }
 
+    // ✅ FIX TBT: Plus de fetch Binance au démarrage
+    // loadAllCryptoPairs() est maintenant vide (désactivé)
     await loadAllCryptoPairs();
 
     const searchInput = document.getElementById('chart-search');
@@ -1669,12 +1670,36 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     changeLanguage(currentLang); 
-    renderChart();
+    
+    // ✅ FIX TBT: Rendre les pills immédiatement (pas de fetch)
     renderMarketPills(); 
     renderTopNavigation();
-    
     updateTerminalLinks();
-    
-    // Start onboarding after a short delay to ensure UI is rendered
-    setTimeout(startOnboarding, 500);
+
+    // ✅ FIX TBT: TradingView chargé en lazy — après le rendu visuel
+    // Ça évite que tv.js bloque le thread principal pendant le premier rendu
+    function loadTradingViewAndRender() {
+        if (typeof TradingView !== 'undefined') {
+            // tv.js déjà chargé
+            renderChart();
+        } else {
+            // Charger tv.js dynamiquement
+            const tvScript = document.createElement('script');
+            tvScript.src = 'https://s3.tradingview.com/tv.js';
+            tvScript.onload = () => renderChart();
+            tvScript.onerror = () => console.error('Failed to load TradingView');
+            document.head.appendChild(tvScript);
+        }
+    }
+
+    // Charger TradingView après 800ms — laisse le navigateur peindre d'abord
+    setTimeout(loadTradingViewAndRender, 800);
+
+    // ✅ FIX TBT: Onboarding différé à 3s — pas critique au démarrage
+    setTimeout(startOnboarding, 3000);
+
+    // ✅ FIX TBT: Events macro différés à 1.5s — pas critiques au démarrage
+    setTimeout(() => {
+        if(typeof fetchLiveEvents === 'function') fetchLiveEvents();
+    }, 1500);
 });

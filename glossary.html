@@ -40,13 +40,11 @@
                 document.documentElement.classList.add('font-cairo');
             }
             
-            document.documentElement.classList.add('anti-flash-hidden');
-            window.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    document.documentElement.classList.remove('anti-flash-hidden');
-                    document.documentElement.classList.add('anti-flash-visible');
-                }, 150);
-            });
+            document.documentElement.lang = savedLang.toLowerCase();
+document.documentElement.dir = savedLang === 'AR' ? 'rtl' : 'ltr';
+if (savedLang === 'AR') {
+    document.documentElement.classList.add('font-cairo');
+}
         })();
     </script>
 </head>
@@ -147,7 +145,7 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="py-8 border-t border-slate-800/50 bg-[#0A101D] mt-auto">
+    <footer class="py-8 border-t border-slate-800/50 bg-[#0A101D] mt-auto" style="min-height:80px">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 tracking-wider">
             <p data-i18n="footer">© 2026 aitradelogic.com - Advanced Trading Intelligence</p>
             <div class="flex gap-6 font-bold uppercase tracking-widest text-slate-400">
