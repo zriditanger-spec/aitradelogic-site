@@ -51,6 +51,22 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             function renderAdHtml(container, html) {
+                if (html.includes('ctengine.io/js/script.js')) {
+                    if (!document.querySelector('script[src*="ctengine.io/js/script.js"]')) {
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = html;
+                        wrapper.querySelectorAll('script').forEach(oldScript => {
+                            const newScript = document.createElement('script');
+                            Array.from(oldScript.attributes).forEach(attribute => {
+                                newScript.setAttribute(attribute.name, attribute.value);
+                            });
+                            newScript.textContent = oldScript.textContent;
+                            document.body.appendChild(newScript);
+                        });
+                    }
+                    return false;
+                }
+
                 container.innerHTML = html;
                 container.querySelectorAll('script').forEach(oldScript => {
                     const newScript = document.createElement('script');
@@ -115,8 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (container && selectedAdId && selectedAdId !== 'none') {
                     const htmlToInject = getAdHtml(selectedAdId);
                     if (htmlToInject) {
-                        renderAdHtml(container, htmlToInject);
-                        container.classList.remove('hidden');
+                        if (renderAdHtml(container, htmlToInject)) {
+                            container.classList.remove('hidden');
+                        }
                     }
                 }
             }
