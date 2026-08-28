@@ -50,6 +50,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
 
+            function renderAdHtml(container, html) {
+                container.innerHTML = html;
+                container.querySelectorAll('script').forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attribute => {
+                        newScript.setAttribute(attribute.name, attribute.value);
+                    });
+                    newScript.textContent = oldScript.textContent;
+                    oldScript.replaceWith(newScript);
+                });
+            }
+
             function ensureArticleAdSlots() {
                 const articleMatch = window.location.pathname.match(/^\/(news|blog)\/[^/]+/);
                 if (!articleMatch) return;
@@ -103,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (container && selectedAdId && selectedAdId !== 'none') {
                     const htmlToInject = getAdHtml(selectedAdId);
                     if (htmlToInject) {
-                        container.innerHTML = htmlToInject;
+                        renderAdHtml(container, htmlToInject);
                         container.classList.remove('hidden');
                     }
                 }
