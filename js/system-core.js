@@ -50,6 +50,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
 
+            function ensureArticleAdSlots() {
+                const articleMatch = window.location.pathname.match(/^\/(news|blog)\/[^/]+/);
+                if (!articleMatch) return;
+
+                const content = document.querySelector('main article, main [data-article-content], article, main');
+                if (!content) return;
+
+                const createSlot = (id, className) => {
+                    if (document.getElementById(id)) return document.getElementById(id);
+                    const slot = document.createElement('div');
+                    slot.id = id;
+                    slot.className = className;
+                    return slot;
+                };
+
+                const topSlot = createSlot('ad-article-top', 'hidden w-full max-w-[970px] mx-auto my-8 justify-center');
+                if (!topSlot.parentElement) content.insertBefore(topSlot, content.firstChild);
+
+                const paragraphs = Array.from(content.querySelectorAll('p')).filter(paragraph => !paragraph.closest('[id^="ad-"]'));
+                const middleSlot = createSlot('ad-article-mid', 'hidden w-full max-w-[970px] mx-auto my-8 justify-center');
+                if (!middleSlot.parentElement) {
+                    const insertionPoint = paragraphs[Math.floor(paragraphs.length / 2)];
+                    if (insertionPoint) insertionPoint.insertAdjacentElement('afterend', middleSlot);
+                    else content.appendChild(middleSlot);
+                }
+
+                const sideSlot = createSlot('ad-article-side', 'hidden w-full max-w-[300px] mx-auto my-8 justify-center');
+                if (!sideSlot.parentElement) {
+                    const aside = document.querySelector('main aside, aside');
+                    (aside || content).appendChild(sideSlot);
+                }
+            }
+
+            ensureArticleAdSlots();
+
             const placements = {
                 'ad-home-top': settings.place_home_top,
                 'ad-blog-top': settings.place_blog_top,
