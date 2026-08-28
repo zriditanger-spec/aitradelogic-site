@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             function ensureArticleAdSlots() {
-                const articleMatch = window.location.pathname.match(/^\/(news|blog)\/[^/]+/);
+                const articleMatch = window.location.pathname.match(/^\/(news|blog|article)\/[^/]+/);
                 if (!articleMatch) return;
 
                 const content = document.querySelector('main article, main [data-article-content], article, main');
@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             ensureArticleAdSlots();
 
+            const isBlogArticle = window.location.pathname.includes('/blog/') || window.location.pathname.includes('/article/');
             const placements = {
                 'ad-home-top': settings.place_home_top,
                 'ad-blog-top': settings.place_blog_top,
@@ -121,9 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 'ad-news-side': settings.place_news_side,
                 'ad-glossary-top': settings.place_glossary_top,
                 'ad-predictions-top': settings.place_predictions_top,
-                'ad-article-top': window.location.pathname.includes('/blog/') ? settings.place_art_blog_top : settings.place_art_news_top,
-                'ad-article-mid': window.location.pathname.includes('/blog/') ? settings.place_art_blog_mid : settings.place_art_news_mid,
-                'ad-article-side': window.location.pathname.includes('/blog/') ? settings.place_art_blog_side : settings.place_art_news_side,
+                'ad-article-top': isBlogArticle ? settings.place_art_blog_top : settings.place_art_news_top,
+                'ad-article-mid': isBlogArticle ? settings.place_art_blog_mid : settings.place_art_news_mid,
+                'ad-article-side': isBlogArticle ? settings.place_art_blog_side : settings.place_art_news_side,
             };
 
             for (const [divId, selectedAdId] of Object.entries(placements)) {

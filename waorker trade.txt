@@ -806,6 +806,7 @@ const generateArticleHTML = (article, lang, fullSlug, baseUrl, visitorCountry, r
         });
     </script>
 
+    <script async src="https://appsha-pnd.ctengine.io/js/script.js?wkey=6KuCjpz1MF"></script>
     <script src="/js/system-core.js"></script>
 
 </body>
@@ -1321,7 +1322,7 @@ export default {
             }
 
             const pagesUrl = new URL(request.url);
-            pagesUrl.hostname = "aitradelogic.pages.dev"; 
+            pagesUrl.hostname = "aitradelogic-site.pages.dev"; 
             return fetch(new Request(pagesUrl, request));
         }
 
